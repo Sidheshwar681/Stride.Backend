@@ -158,6 +158,4 @@ app.MapGet("/api", () => Results.Json(new
 
 app.MapGet("/error", () => Results.Problem("An unexpected server error occurred."));
 
-app.MapFallback(() => Results.Problem("Endpoint not found.", statusCode: 404));
-
 app.Run();
