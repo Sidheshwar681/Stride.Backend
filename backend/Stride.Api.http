@@ -1,0 +1,6 @@
+@Stride.Api_HostAddress = http://localhost:5231
+
+GET {{Stride.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

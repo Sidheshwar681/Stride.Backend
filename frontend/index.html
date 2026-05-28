@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="STRIDE — premium performance and lifestyle sneakers. Shop best sellers, new arrivals, and limited drops."
+    />
+    <meta name="theme-color" content="#0b0b10" />
+    <title>STRIDE Footwear</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="css/styles.css" as="style" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <nav class="navbar" aria-label="Primary">
+        <div class="nav-left">
+          <button
+            class="icon-btn nav-menu-btn"
+            type="button"
+            aria-label="Open menu"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            data-action="open-sidebar"
+          >
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
+          </button>
+
+          <a class="brand" href="#top" aria-label="STRIDE home">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 44 44" fill="none">
+                <path
+                  d="M33.7 12.2c-6.8-4.7-16.5-3.1-21.6 3.8C7 23.2 8.2 33 14.8 37.9c5.2 3.9 12.3 3.9 17.6.3"
+                  stroke="currentColor"
+                  stroke-width="3.2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M36.5 26.1c-2.7 3.8-7.2 6.2-12.2 6.2-8.2 0-14.8-6.6-14.8-14.8 0-1 .1-2 .3-3"
+                  stroke="currentColor"
+                  stroke-width="3.2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+            <span class="brand-text">
+              <span class="brand-name">STRIDE</span>
+              <span class="brand-tag">Footwear</span>
+            </span>
+          </a>
+        </div>
+
+        <div class="nav-center">
+          <a class="nav-link" href="#shop">Shop</a>
+          <a class="nav-link" href="#collections">Collections</a>
+          <a class="nav-link" href="#about">About</a>
+          <a class="nav-link" href="#support">Support</a>
+        </div>
+
+        <div class="nav-right">
+          <form class="nav-search" role="search" aria-label="Site search">
+            <label class="sr-only" for="navSearchInput">Search products</label>
+            <span class="search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
+            <input
+              id="navSearchInput"
+              name="q"
+              type="search"
+              placeholder="Search sneakers…"
+              autocomplete="off"
+              inputmode="search"
+              data-bind="query"
+            />
+          </form>
+
+          <span class="auth-chip" data-bind="authChip" hidden></span>
+          <button
+            class="icon-btn"
+            type="button"
+            aria-label="Account"
+            data-action="open-auth"
+            title="Account"
+          >
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+
+          <button
+            class="icon-btn"
+            type="button"
+            aria-label="Toggle theme"
+            data-action="toggle-theme"
+            title="Toggle theme"
+          >
+            <span class="icon" aria-hidden="true">
+              <svg class="theme-icon" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M21 13.2A8.6 8.6 0 0 1 10.8 3a7.7 7.7 0 1 0 10.2 10.2Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+
+          <button
+            class="icon-btn cart-btn"
+            type="button"
+            aria-label="Open cart"
+            aria-controls="cartDrawer"
+            aria-expanded="false"
+            data-action="open-cart"
+            title="Cart"
+          >
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M6.5 7.5h15l-1.2 12.1a2 2 0 0 1-2 1.9H8.7a2 2 0 0 1-2-1.9L5.5 3.5H2.7"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path d="M9 7.5a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
+            <span class="badge" aria-label="Items in cart" data-bind="cartCount">0</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <aside class="sidebar" id="sidebar" aria-label="Menu" aria-hidden="true">
+      <div class="sidebar-top">
+        <div class="sidebar-title">
+          <span class="sidebar-brand">STRIDE</span>
+          <span class="sidebar-subtitle">Navigate</span>
+        </div>
+        <button class="icon-btn" type="button" aria-label="Close menu" data-action="close-sidebar">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Quick Links</div>
+          <a class="sidebar-link" href="#shop" data-action="close-sidebar">Shop</a>
+          <a class="sidebar-link" href="#collections" data-action="close-sidebar">Collections</a>
+          <a class="sidebar-link" href="#about" data-action="close-sidebar">About</a>
+          <a class="sidebar-link" href="#support" data-action="close-sidebar">Support</a>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Categories</div>
+          <button class="pill" type="button" data-action="set-category" data-category="all">All</button>
+          <button class="pill" type="button" data-action="set-category" data-category="running">Running</button>
+          <button class="pill" type="button" data-action="set-category" data-category="lifestyle">Lifestyle</button>
+          <button class="pill" type="button" data-action="set-category" data-category="training">Training</button>
+          <button class="pill" type="button" data-action="set-category" data-category="outdoor">Outdoor</button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Perks</div>
+          <ul class="checklist">
+            <li>Free shipping over $75</li>
+            <li>30-day easy returns</li>
+            <li>Secure checkout</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <div class="scrim" data-action="close-overlays" aria-hidden="true"></div>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <div class="eyebrow">Limited drop • Spring / Summer</div>
+            <h1 class="hero-title">Built to move. Styled to last.</h1>
+            <p class="hero-subtitle">
+              Performance cushioning, breathable uppers, and clean silhouettes—designed for everyday miles and
+              off-duty fits.
+            </p>
+
+            <div class="hero-cta">
+              <a class="btn primary" href="#shop">Shop Best Sellers</a>
+              <a class="btn ghost" href="#collections">Explore Collections</a>
+            </div>
+
+            <div class="hero-metrics" aria-label="Highlights">
+              <div class="metric">
+                <div class="metric-value">4.8★</div>
+                <div class="metric-label">Avg rating</div>
+              </div>
+              <div class="metric">
+                <div class="metric-value">30 days</div>
+                <div class="metric-label">Easy returns</div>
+              </div>
+              <div class="metric">
+                <div class="metric-value">2–4 days</div>
+                <div class="metric-label">Delivery</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-art" aria-hidden="true">
+            <div class="shoe-card">
+              <div class="shoe-img" data-hero-shoe></div>
+              <div class="shoe-meta">
+                <div class="shoe-name">Nova Runner</div>
+                <div class="shoe-price">$129</div>
+              </div>
+            </div>
+            <div class="floating-pill">Breathable knit</div>
+            <div class="floating-pill second">Cloud foam</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="feature-bar" aria-label="Store benefits">
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">↟</div>
+          <div class="feature-text">
+            <div class="feature-title">Fast shipping</div>
+            <div class="feature-sub">Ships in 24 hours</div>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">⟲</div>
+          <div class="feature-text">
+            <div class="feature-title">Easy returns</div>
+            <div class="feature-sub">30-day try-on</div>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">⌁</div>
+          <div class="feature-text">
+            <div class="feature-title">Secure checkout</div>
+            <div class="feature-sub">Encrypted payments</div>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">◈</div>
+          <div class="feature-text">
+            <div class="feature-title">Premium materials</div>
+            <div class="feature-sub">Built for miles</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="shop" aria-label="Shop products">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Shop sneakers</h2>
+            <p class="section-subtitle">Curated pairs that look sharp and feel effortless.</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn small" type="button" data-action="scroll-to-cart">
+              View cart
+              <span class="muted">(saved locally)</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="shop-controls" aria-label="Filters">
+          <div class="chips" role="group" aria-label="Category">
+            <button class="chip is-active" type="button" data-action="set-category" data-category="all">All</button>
+            <button class="chip" type="button" data-action="set-category" data-category="running">Running</button>
+            <button class="chip" type="button" data-action="set-category" data-category="lifestyle">Lifestyle</button>
+            <button class="chip" type="button" data-action="set-category" data-category="training">Training</button>
+            <button class="chip" type="button" data-action="set-category" data-category="outdoor">Outdoor</button>
+          </div>
+
+          <div class="controls-row">
+            <label class="control">
+              <span class="control-label">Max price</span>
+              <input type="range" min="60" max="220" step="5" value="220" data-bind="maxPrice" />
+              <span class="control-value" data-bind="maxPriceLabel">$220</span>
+            </label>
+
+            <label class="control">
+              <span class="control-label">Sort</span>
+              <select data-bind="sort">
+                <option value="featured">Featured</option>
+                <option value="price_asc">Price: Low → High</option>
+                <option value="price_desc">Price: High → Low</option>
+                <option value="rating_desc">Rating</option>
+                <option value="newest">Newest</option>
+              </select>
+            </label>
+
+            <label class="control grow">
+              <span class="control-label">Search</span>
+              <input type="search" placeholder="Try “runner”, “leather”, “trail”…" autocomplete="off" data-bind="query" />
+            </label>
+          </div>
+        </div>
+
+        <div class="shop-grid" data-bind="productGrid" aria-live="polite"></div>
+
+        <div class="empty-state" data-bind="emptyState" hidden>
+          <div class="empty-title">No matches</div>
+          <p class="empty-text">Try clearing filters or searching for a different style.</p>
+          <button class="btn" type="button" data-action="reset-filters">Reset filters</button>
+        </div>
+      </section>
+
+      <section class="section alt" id="collections" aria-label="Collections">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Collections</h2>
+            <p class="section-subtitle">Three lines built for different days.</p>
+          </div>
+        </div>
+
+        <div class="collection-grid">
+          <article class="collection-card">
+            <div class="collection-top">
+              <div class="collection-kicker">RUNNING</div>
+              <h3 class="collection-title">Nova Series</h3>
+              <p class="collection-text">Lightweight bounce, stable landings, and airy uppers.</p>
+            </div>
+            <div class="collection-bottom">
+              <button class="btn small" type="button" data-action="set-category" data-category="running">Shop Nova</button>
+            </div>
+          </article>
+
+          <article class="collection-card">
+            <div class="collection-top">
+              <div class="collection-kicker">LIFESTYLE</div>
+              <h3 class="collection-title">City Studio</h3>
+              <p class="collection-text">Leather + suede essentials, made for long days.</p>
+            </div>
+            <div class="collection-bottom">
+              <button class="btn small" type="button" data-action="set-category" data-category="lifestyle">
+                Shop City
+              </button>
+            </div>
+          </article>
+
+          <article class="collection-card">
+            <div class="collection-top">
+              <div class="collection-kicker">OUTDOOR</div>
+              <h3 class="collection-title">Trailworks</h3>
+              <p class="collection-text">Grippy lugs, rugged uppers, and weather-ready comfort.</p>
+            </div>
+            <div class="collection-bottom">
+              <button class="btn small" type="button" data-action="set-category" data-category="outdoor">
+                Shop Trail
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="about" aria-label="About STRIDE">
+        <div class="two-col">
+          <div>
+            <h2 class="section-title">Designed with athletes. Refined for the street.</h2>
+            <p class="section-subtitle">
+              STRIDE is a small studio obsessed with comfort and durability—testing each pair across long walks,
+              training sessions, and weekend travel.
+            </p>
+            <ul class="bullet-list">
+              <li>Balanced cushioning that stays responsive.</li>
+              <li>Breathable uppers with supportive structure.</li>
+              <li>Outsoles built for grip and longevity.</li>
+            </ul>
+          </div>
+
+          <div class="about-card" aria-hidden="true">
+            <div class="about-stat">
+              <div class="about-stat-value">10k+</div>
+              <div class="about-stat-label">Pairs delivered</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-value">99%</div>
+              <div class="about-stat-label">Fit satisfaction</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-value">48 hrs</div>
+              <div class="about-stat-label">Avg ship time</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="support" aria-label="Support">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Support</h2>
+            <p class="section-subtitle">Quick answers to common questions.</p>
+          </div>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>How does sizing work?</summary>
+            <p>Most pairs fit true to size. If you’re between sizes, go half up for running models.</p>
+          </details>
+          <details>
+            <summary>What’s your return policy?</summary>
+            <p>Try them for 30 days. If they’re not right, return them in original condition.</p>
+          </details>
+          <details>
+            <summary>Do you ship internationally?</summary>
+            <p>Yes—rates and timelines vary by region. Your cart shows the estimate before checkout.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="section newsletter" aria-label="Newsletter">
+        <div class="newsletter-inner">
+          <div>
+            <h2 class="section-title">Get early access</h2>
+            <p class="section-subtitle">Drop alerts, restocks, and fit tips. No spam.</p>
+          </div>
+
+          <form class="newsletter-form" data-action="newsletter" aria-label="Newsletter sign up">
+            <label class="sr-only" for="newsletterEmail">Email</label>
+            <input id="newsletterEmail" type="email" placeholder="you@example.com" autocomplete="email" required />
+            <button class="btn primary" type="submit">Join</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="footer-title">STRIDE</div>
+          <div class="footer-sub">Premium sneakers for every day.</div>
+          <div class="footer-note">Static demo site • Built with HTML/CSS/JS</div>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-col">
+            <div class="footer-heading">Shop</div>
+            <a href="#shop">All shoes</a>
+            <a href="#collections">Collections</a>
+            <a href="#support">Shipping</a>
+          </div>
+          <div class="footer-col">
+            <div class="footer-heading">Company</div>
+            <a href="#about">About</a>
+            <a href="#support">Support</a>
+            <a href="#top">Back to top</a>
+          </div>
+          <div class="footer-col">
+            <div class="footer-heading">Legal</div>
+            <span class="muted">© <span data-bind="year"></span> STRIDE</span>
+            <span class="muted">All product images are SVG placeholders.</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <section class="drawer cart-drawer" id="cartDrawer" aria-label="Cart" aria-hidden="true">
+      <div class="drawer-top">
+        <div>
+          <div class="drawer-title">Your cart</div>
+          <div class="drawer-subtitle">Saved on this device.</div>
+        </div>
+        <button class="icon-btn" type="button" aria-label="Close cart" data-action="close-cart">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div class="drawer-body" data-bind="cartItems" aria-live="polite"></div>
+
+      <div class="drawer-bottom">
+        <div class="totals">
+          <div class="totals-row">
+            <span class="muted">Subtotal</span>
+            <span data-bind="cartSubtotal">$0</span>
+          </div>
+          <div class="totals-row">
+            <span class="muted">Shipping</span>
+            <span class="muted">Calculated at checkout</span>
+          </div>
+        </div>
+        <button class="btn primary full" type="button" data-action="checkout">Checkout</button>
+      </div>
+    </section>
+
+    <dialog class="modal auth-modal" data-bind="authModal" aria-label="Account">
+      <form method="dialog" class="modal-inner">
+        <div class="modal-top">
+          <div class="modal-title">Account</div>
+          <button class="icon-btn" value="cancel" aria-label="Close account">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="modal-content auth-content">
+          <div class="auth-logged-in" data-bind="authLoggedIn" hidden>
+            <div class="auth-card">
+              <div class="auth-heading">Signed in</div>
+              <div class="muted">
+                as <span class="auth-user" data-bind="authUser"></span>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button class="btn full" type="button" data-action="logout">Log out</button>
+              <button class="btn primary full" type="button" data-action="close-auth">Continue shopping</button>
+            </div>
+          </div>
+
+          <div class="auth-logged-out" data-bind="authLoggedOut">
+            <div class="auth-tabs" role="tablist" aria-label="Authentication tabs">
+              <button class="auth-tab" type="button" data-action="auth-set-mode" data-mode="login" aria-pressed="true">
+                Sign in
+              </button>
+              <button class="auth-tab" type="button" data-action="auth-set-mode" data-mode="register" aria-pressed="false">
+                Create account
+              </button>
+            </div>
+
+            <div class="auth-error" data-bind="authError" hidden></div>
+
+            <div class="auth-form" data-bind="authLoginForm">
+              <div class="field">
+                <label for="authIdentifier">Email or username</label>
+                <input id="authIdentifier" type="text" autocomplete="username" inputmode="email" />
+              </div>
+              <div class="field">
+                <label for="authPassword">Password</label>
+                <input id="authPassword" type="password" autocomplete="current-password" />
+              </div>
+              <div class="modal-actions">
+                <button class="btn primary full" type="button" data-action="auth-login">Sign in</button>
+              </div>
+            </div>
+
+            <div class="auth-form" data-bind="authRegisterForm" hidden>
+              <div class="field">
+                <label for="authUsername">Username</label>
+                <input id="authUsername" type="text" autocomplete="nickname" />
+              </div>
+              <div class="field">
+                <label for="authEmail">Email</label>
+                <input id="authEmail" type="email" autocomplete="email" inputmode="email" />
+              </div>
+              <div class="field">
+                <label for="authNewPassword">Password</label>
+                <input id="authNewPassword" type="password" autocomplete="new-password" />
+              </div>
+              <div class="modal-actions">
+                <button class="btn primary full" type="button" data-action="auth-register">Create account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal" data-bind="productModal" aria-label="Product details">
+      <form method="dialog" class="modal-inner">
+        <div class="modal-top">
+          <div class="modal-title" data-bind="modalTitle">Product</div>
+          <button class="icon-btn" value="cancel" aria-label="Close product">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="modal-content">
+          <div class="modal-media" data-bind="modalMedia" aria-hidden="true"></div>
+          <div class="modal-details">
+            <div class="modal-price-row">
+              <div class="price" data-bind="modalPrice">$0</div>
+              <div class="rating" data-bind="modalRating">★★★★★</div>
+            </div>
+            <p class="modal-desc" data-bind="modalDesc"></p>
+
+            <div class="size-picker" aria-label="Select size">
+              <div class="size-label">Size</div>
+              <div class="size-grid" data-bind="sizeGrid"></div>
+            </div>
+
+            <div class="modal-actions">
+              <button class="btn primary full" type="button" data-action="add-to-cart-from-modal">Add to cart</button>
+              <button class="btn ghost full" type="button" data-action="copy-link">Copy link</button>
+            </div>
+
+            <div class="modal-note muted">
+              Tip: Shareable links work on S3 since this is a single-page layout.
+            </div>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-bind="toast" hidden></div>
+
+    <script src="js/app.js" defer></script>
+  </body>
+</html>
