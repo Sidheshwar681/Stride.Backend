@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Stride.Api.Services;
 using Stride.Api.Storage;
@@ -46,6 +47,24 @@ public sealed class AuthController : ControllerBase
     public sealed record AuthResponse(Guid UserId, string Username, string Email, string AccessToken);
 
     public sealed record MeResponse(Guid UserId, string Username, string Email, DateTimeOffset CreatedAt);
+
+    [HttpGet("register")]
+    public ActionResult RegisterInfo()
+    {
+        return StatusCode(StatusCodes.Status405MethodNotAllowed, new
+        {
+            message = "Use POST /api/auth/register with JSON body { username, email, password }."
+        });
+    }
+
+    [HttpGet("login")]
+    public ActionResult LoginInfo()
+    {
+        return StatusCode(StatusCodes.Status405MethodNotAllowed, new
+        {
+            message = "Use POST /api/auth/login with JSON body { identifier, password }."
+        });
+    }
 
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request, CancellationToken cancellationToken)
