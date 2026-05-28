@@ -141,7 +141,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Health Check Route
-app.MapGet("/", () => "Stride API is running successfully.");
+app.MapMethods("/", new[] { "GET", "HEAD", "OPTIONS" },
+    () => Results.Text("Stride API is running successfully."));
 app.MapGet("/error", () => Results.Problem("An unexpected server error occurred."));
+
+app.MapFallback(() => Results.Problem("Endpoint not found.", statusCode: 404));
 
 app.Run();
