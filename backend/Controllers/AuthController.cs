@@ -70,38 +70,6 @@ public sealed class AuthController : ControllerBase
         });
     }
 
-    [HttpPost("register")]
-    public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request, CancellationToken cancellationToken)
-    {
-        var passwordHash = _passwordHasher.Hash(request.Password);
-        var (user, error) = await _users.CreateAsync(request.Username, request.Email, passwordHash, cancellationToken);
-        if (user is null)
-        {
-            return BadRequest(new { message = error ?? "Unable to register." });
-        }
-
-        var token = _tokens.CreateAccessToken(user);
-        return Ok(new AuthResponse(user.Id, user.Username, user.Email, token));
-    }
-
-    [HttpPost("login")]
-    public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken cancellationToken)
-    {
-        var user = await _users.FindByEmailOrUsernameAsync(request.Identifier, cancellationToken);
-        if (user is null)
-        {
-            return Unauthorized(new { message = "Invalid credentials." });
-        }
-
-        if (!_passwordHasher.Verify(request.Password, user.PasswordHash))
-        {
-            return Unauthorized(new { message = "Invalid credentials." });
-        }
-
-        var token = _tokens.CreateAccessToken(user);
-        return Ok(new AuthResponse(user.Id, user.Username, user.Email, token));
-    }
-
     [Authorize]
     [HttpGet("me")]
     public async Task<ActionResult<MeResponse>> Me(CancellationToken cancellationToken)

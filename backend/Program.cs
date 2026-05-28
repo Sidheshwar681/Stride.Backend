@@ -137,6 +137,47 @@ app.UseCors("AllowVercel");
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Auth POST endpoints
+app.MapPost("/api/auth/register", async (
+    RegisterRequest request,
+    UserRepository users,
+    PasswordHasher passwordHasher,
+    TokenService tokens,
+    CancellationToken cancellationToken) =>
+{
+    var passwordHash = passwordHasher.Hash(request.Password);
+    var (user, error) = await users.CreateAsync(request.Username, request.Email, passwordHash, cancellationToken);
+    if (user is null)
+    {
+        return Results.BadRequest(new { message = error ?? "Unable to register." });
+    }
+
+    var token = tokens.CreateAccessToken(user);
+    return Results.Ok(new { user.Id, user.Username, user.Email, AccessToken = token });
+});
+
+app.MapPost("/api/auth/login", async (
+    LoginRequest request,
+    UserRepository users,
+    PasswordHasher passwordHasher,
+    TokenService tokens,
+    CancellationToken cancellationToken) =>
+{
+    var user = await users.FindByEmailOrUsernameAsync(request.Identifier, cancellationToken);
+    if (user is null)
+    {
+        return Results.Unauthorized();
+    }
+
+    if (!passwordHasher.Verify(request.Password, user.PasswordHash))
+    {
+        return Results.Unauthorized();
+    }
+
+    var token = tokens.CreateAccessToken(user);
+    return Results.Ok(new { user.Id, user.Username, user.Email, AccessToken = token });
+});
+
 // Controllers
 app.MapControllers();
 
