@@ -10,7 +10,7 @@ using Stride.Api.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("ConnectionStrings__DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(connectionString))
 {
     var databaseUrl = builder.Configuration["DATABASE_URL"];
@@ -18,8 +18,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
     {
         connectionString = new NpgsqlConnectionStringBuilder(databaseUrl)
         {
-            SslMode = SslMode.Require,
-            TrustServerCertificate = true
+            SslMode = SslMode.Require
         }.ToString();
     }
 }
@@ -41,7 +40,6 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Controllers
 builder.Services.AddControllers();
