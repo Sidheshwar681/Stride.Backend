@@ -89,7 +89,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 // HTTPS
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // CORS
 app.UseCors("AllowVercel");
