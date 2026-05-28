@@ -48,8 +48,8 @@ public sealed class AuthController : ControllerBase
 
     public sealed record MeResponse(Guid UserId, string Username, string Email, DateTimeOffset CreatedAt);
 
-    [HttpGet("register")]
-    [HttpOptions("register")]
+    [AcceptVerbs("GET", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE")]
+    [Route("register")]
     [ApiExplorerSettings(IgnoreApi = true)]
     public ActionResult RegisterInfo()
     {
@@ -59,8 +59,8 @@ public sealed class AuthController : ControllerBase
         });
     }
 
-    [HttpGet("login")]
-    [HttpOptions("login")]
+    [AcceptVerbs("GET", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE")]
+    [Route("login")]
     [ApiExplorerSettings(IgnoreApi = true)]
     public ActionResult LoginInfo()
     {
