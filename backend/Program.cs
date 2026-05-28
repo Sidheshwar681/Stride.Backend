@@ -137,6 +137,19 @@ app.UseCors("AllowVercel");
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Explicit guidance for auth route methods
+app.MapMethods("/api/auth/register", new[] { "GET", "OPTIONS" },
+    () => Results.Json(new
+    {
+        message = "Use POST /api/auth/register with JSON body { username, email, password }."
+    }, statusCode: 405));
+
+app.MapMethods("/api/auth/login", new[] { "GET", "OPTIONS" },
+    () => Results.Json(new
+    {
+        message = "Use POST /api/auth/login with JSON body { identifier, password }."
+    }, statusCode: 405));
+
 // Controllers
 app.MapControllers();
 
