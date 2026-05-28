@@ -49,6 +49,7 @@ public sealed class AuthController : ControllerBase
     public sealed record MeResponse(Guid UserId, string Username, string Email, DateTimeOffset CreatedAt);
 
     [HttpGet("register")]
+    [HttpOptions("register")]
     [ApiExplorerSettings(IgnoreApi = true)]
     public ActionResult RegisterInfo()
     {
@@ -59,6 +60,7 @@ public sealed class AuthController : ControllerBase
     }
 
     [HttpGet("login")]
+    [HttpOptions("login")]
     [ApiExplorerSettings(IgnoreApi = true)]
     public ActionResult LoginInfo()
     {
