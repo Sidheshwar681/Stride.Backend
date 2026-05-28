@@ -10,7 +10,7 @@ using Stride.Api.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("ConnectionStrings__DefaultConnection");
 if (string.IsNullOrWhiteSpace(connectionString))
 {
     var databaseUrl = builder.Configuration["DATABASE_URL"];

@@ -34,8 +34,8 @@ Render doesn’t have a dedicated ASP.NET preset in the UI. Deploy this repo as 
 
 Minimum env vars to set on Render:
 
-- `ConnectionStrings__DefaultConnection` = your Postgres connection string
-- or `DATABASE_URL` = your Postgres URL
+- `ConnectionStrings__DefaultConnection` =Host=db.paaceqovuwdqyxvwwjui.supabase.co;Database=postgres;Username=postgres;Password=Swami9011574345;SSL Mode=Require;Trust Server Certificate=true
+- or `DATABASE_URL` = https://supabase.com/dashboard/project/paaceqovuwdqyxvwwjui/sql/2cb60cfa-c958-4e04-b862-6c3c50b6b510?showConnect=true&connectTab=direct&type=dotnet
 - `Jwt__SigningKey` (replace the dev key)
 - Optional (recommended): `ASPNETCORE_FORWARDEDHEADERS_ENABLED=true`
 
