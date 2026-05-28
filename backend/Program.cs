@@ -1,17 +1,47 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using Stride.Api.Data;
 using Stride.Api.Services;
 using Stride.Api.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    var databaseUrl = builder.Configuration["DATABASE_URL"];
+    if (!string.IsNullOrWhiteSpace(databaseUrl))
+    {
+        connectionString = new NpgsqlConnectionStringBuilder(databaseUrl)
+        {
+            SslMode = SslMode.Require,
+            TrustServerCertificate = true
+        }.ToString();
+    }
+}
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Missing database connection string. Set ConnectionStrings:DefaultConnection or DATABASE_URL.");
+}
+
+// Forwarded headers for Render / proxies
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
+
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Controllers
 builder.Services.AddControllers();
@@ -88,6 +118,17 @@ var app = builder.Build();
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/error");
+}
+
+app.UseForwardedHeaders();
 // HTTPS
 //app.UseHttpsRedirection();
 
@@ -103,5 +144,6 @@ app.MapControllers();
 
 // Health Check Route
 app.MapGet("/", () => "Stride API is running successfully.");
+app.MapGet("/error", () => Results.Problem("An unexpected server error occurred."));
 
 app.Run();

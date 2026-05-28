@@ -34,6 +34,8 @@ Render doesn’t have a dedicated ASP.NET preset in the UI. Deploy this repo as 
 
 Minimum env vars to set on Render:
 
+- `ConnectionStrings__DefaultConnection` = your Postgres connection string
+- or `DATABASE_URL` = your Postgres URL
 - `Jwt__SigningKey` (replace the dev key)
 - Optional (recommended): `ASPNETCORE_FORWARDEDHEADERS_ENABLED=true`
 
