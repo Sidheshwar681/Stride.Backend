@@ -49,6 +49,7 @@ public sealed class AuthController : ControllerBase
     public sealed record MeResponse(Guid UserId, string Username, string Email, DateTimeOffset CreatedAt);
 
     [HttpGet("register")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public ActionResult RegisterInfo()
     {
         return StatusCode(StatusCodes.Status405MethodNotAllowed, new
@@ -58,6 +59,7 @@ public sealed class AuthController : ControllerBase
     }
 
     [HttpGet("login")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public ActionResult LoginInfo()
     {
         return StatusCode(StatusCodes.Status405MethodNotAllowed, new
