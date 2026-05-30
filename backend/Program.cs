@@ -1,4 +1,6 @@
+using System;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -65,17 +67,19 @@ builder.Services.AddSwaggerGen(options =>
         Type = SecuritySchemeType.Http,
         Scheme = "bearer",
         BearerFormat = "JWT",
-        Reference = new OpenApiReference
-        {
-            Type = ReferenceType.SecurityScheme,
-            Id = "Bearer"
-        }
     };
 
     options.AddSecurityDefinition("Bearer", bearerScheme);
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+
+    // Swashbuckle with Microsoft.OpenApi expects a factory that receives the
+    // generated OpenApiDocument and returns an OpenApiSecurityRequirement.
+    options.AddSecurityRequirement(doc =>
     {
-        [bearerScheme] = new[] { Array.Empty<string>() }
+        var req = new OpenApiSecurityRequirement();
+        // Create a reference to the security scheme by id using the document.
+        var schemeRef = new OpenApiSecuritySchemeReference("Bearer", doc, null);
+        req.Add(schemeRef, new List<string>());
+        return req;
     });
 });
 

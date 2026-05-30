@@ -10,8 +10,8 @@ Data is stored locally (dev) in `App_Data/stride-db.json` (created at runtime).
 ## Run locally
 
 ```powershell
-dotnet restore
-dotnet run --urls http://localhost:5231
+dotnet restorehttp://localhost:5231
+dotnet run --urls 
 ```
 
 Open:
