@@ -59,10 +59,13 @@ public sealed class AuthController : ControllerBase
         DateTimeOffset CreatedAt);
 
     [AllowAnonymous]
-    [HttpPost("register")]
-    public async Task<ActionResult<AuthResponse>> Register(
-        [FromBody] RegisterRequest request,
-        CancellationToken cancellationToken)
+    [AllowAnonymous]
+[HttpPost("register")]
+public async Task<ActionResult<AuthResponse>> Register(
+    RegisterRequest request,
+    CancellationToken cancellationToken)
+{
+    try
     {
         var passwordHash = _passwordHasher.Hash(request.Password);
 
@@ -74,10 +77,7 @@ public sealed class AuthController : ControllerBase
 
         if (user is null)
         {
-            return BadRequest(new
-            {
-                message = error ?? "Unable to register."
-            });
+            return BadRequest(new { message = error });
         }
 
         var token = _tokens.CreateAccessToken(user);
@@ -88,7 +88,15 @@ public sealed class AuthController : ControllerBase
             user.Email,
             token));
     }
-
+    catch (Exception ex)
+    {
+        return StatusCode(500, new
+        {
+            error = ex.Message,
+            inner = ex.InnerException?.Message
+        });
+    }
+}
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> Login(
