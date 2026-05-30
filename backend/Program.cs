@@ -188,7 +188,30 @@ if (!string.IsNullOrWhiteSpace(portEnv) && int.TryParse(portEnv, out var p))
 }
 
 var app = builder.Build();
+// Database Startup Check
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
+        Console.WriteLine("=== DATABASE CONNECTIVITY TEST ===");
+
+        var canConnect = await db.Database.CanConnectAsync();
+
+        Console.WriteLine($"Database connected: {canConnect}");
+
+        if (canConnect)
+        {
+            Console.WriteLine("Database connection successful.");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("DATABASE ERROR:");
+        Console.WriteLine(ex.ToString());
+    }
+}
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
