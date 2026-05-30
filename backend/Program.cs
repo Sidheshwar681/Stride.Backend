@@ -2,8 +2,11 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using Npgsql;
+using System.Collections.Generic;
 using Stride.Api.Data;
 using Stride.Api.Services;
 using Stride.Api.Storage;
@@ -46,7 +49,35 @@ builder.Services.AddControllers();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Stride API",
+        Version = "v1"
+    });
+
+    var bearerScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Enter JWT Bearer token as: Bearer {token}",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
+    };
+
+    options.AddSecurityDefinition("Bearer", bearerScheme);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        [bearerScheme] = new[] { Array.Empty<string>() }
+    });
+});
 
 // JWT Configuration
 builder.Services.Configure<JwtOptions>(
@@ -67,6 +98,8 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -81,6 +114,27 @@ builder.Services
 
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                var logger = context.HttpContext.RequestServices
+                    .GetRequiredService<ILogger<Program>>();
+                logger.LogError(context.Exception, "JWT authentication failed.");
+                return Task.CompletedTask;
+            },
+            OnChallenge = context =>
+            {
+                var logger = context.HttpContext.RequestServices
+                    .GetRequiredService<ILogger<Program>>();
+                logger.LogWarning(
+                    "JWT bearer challenge: {Error} {ErrorDescription}",
+                    context.Error,
+                    context.ErrorDescription);
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -99,17 +153,35 @@ builder.Services.AddScoped<PurchaseRepository>();
 // CORS
 builder.Services.AddCors(options =>
 {
+    // Allow passing a frontend origin via config or env var (useful on Render)
+    var frontendOrigin = builder.Configuration["FrontendOrigin"] ?? Environment.GetEnvironmentVariable("FRONTEND_ORIGIN");
+
     options.AddPolicy("AllowVercel", policy =>
     {
+        var origins = new List<string>
+        {
+            "https://stride-frontend-one.vercel.app",
+            "http://localhost:5173"
+        };
+
+        if (!string.IsNullOrWhiteSpace(frontendOrigin))
+        {
+            origins.Add(frontendOrigin);
+        }
+
         policy
-            .WithOrigins(
-                "https://stride-frontend-one.vercel.app",
-                "http://localhost:5173"
-            )
+            .WithOrigins(origins.ToArray())
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
 });
+
+// If a hosting platform (like Render) provides a PORT env var, bind to it on 0.0.0.0
+var portEnv = Environment.GetEnvironmentVariable("PORT") ?? builder.Configuration["PORT"];
+if (!string.IsNullOrWhiteSpace(portEnv) && int.TryParse(portEnv, out var p))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{p}");
+}
 
 var app = builder.Build();
 

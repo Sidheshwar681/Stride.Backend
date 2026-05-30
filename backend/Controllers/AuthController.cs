@@ -48,6 +48,7 @@ public sealed class AuthController : ControllerBase
 
     public sealed record MeResponse(Guid UserId, string Username, string Email, DateTimeOffset CreatedAt);
 
+    [AllowAnonymous]
     [AcceptVerbs("GET", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE")]
     [Route("register")]
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -59,6 +60,7 @@ public sealed class AuthController : ControllerBase
         });
     }
 
+    [AllowAnonymous]
     [AcceptVerbs("GET", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE")]
     [Route("login")]
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -70,6 +72,7 @@ public sealed class AuthController : ControllerBase
         });
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request, CancellationToken cancellationToken)
     {
@@ -84,6 +87,7 @@ public sealed class AuthController : ControllerBase
         return Ok(new AuthResponse(user.Id, user.Username, user.Email, token));
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken cancellationToken)
     {
@@ -120,4 +124,10 @@ public sealed class AuthController : ControllerBase
 
         return Ok(new MeResponse(user.Id, user.Username, user.Email, user.CreatedAt));
     }
+    
+    [HttpGet("version")]
+public IActionResult Version()
+{
+    return Ok("Build: 2026-05-30-v1");
+}
 }
