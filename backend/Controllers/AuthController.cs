@@ -59,7 +59,7 @@ public sealed class AuthController : ControllerBase
         DateTimeOffset CreatedAt);
 
     [AllowAnonymous]
-    [AllowAnonymous]
+  
 [HttpPost("register")]
 public async Task<ActionResult<AuthResponse>> Register(
     RegisterRequest request,
