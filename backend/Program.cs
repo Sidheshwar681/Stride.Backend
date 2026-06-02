@@ -164,8 +164,8 @@ builder.Services.AddCors(options =>
     {
         var origins = new List<string>
         {
-            "https://stride-frontend-one.vercel.app",
-            "http://localhost:5173"
+            "https://stride-frontend-one.vercel.app/"
+          
         };
 
         if (!string.IsNullOrWhiteSpace(frontendOrigin))
@@ -181,8 +181,11 @@ builder.Services.AddCors(options =>
 });
 
 // If a hosting platform (like Render) provides a PORT env var, bind to it on 0.0.0.0
-var portEnv = Environment.GetEnvironmentVariable("PORT") ?? builder.Configuration["PORT"];
-if (!string.IsNullOrWhiteSpace(portEnv) && int.TryParse(portEnv, out var p))
+var portEnv = Environment.GetEnvironmentVariable("PORT")
+              ?? builder.Configuration["PORT"];
+
+if (!string.IsNullOrWhiteSpace(portEnv) &&
+    int.TryParse(portEnv, out var p))
 {
     builder.WebHost.UseUrls($"http://0.0.0.0:{p}");
 }
@@ -212,6 +215,19 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine(ex.ToString());
     }
 }
+
+app.MapGet("/db-check", async (AppDbContext db) =>
+{
+    try
+    {
+        var canConnect = await db.Database.CanConnectAsync();
+        return Results.Ok(new { canConnect });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(ex.Message);
+    }
+});
 // Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
