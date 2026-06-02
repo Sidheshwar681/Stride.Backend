@@ -15,18 +15,11 @@ using Stride.Api.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-if (string.IsNullOrWhiteSpace(connectionString))
-{
-    var databaseUrl = builder.Configuration["DATABASE_URL"];
-    if (!string.IsNullOrWhiteSpace(databaseUrl))
-    {
-        connectionString = new NpgsqlConnectionStringBuilder(databaseUrl)
-        {
-            SslMode = SslMode.Require
-        }.ToString();
-    }
-}
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 if (string.IsNullOrWhiteSpace(connectionString))
 {
