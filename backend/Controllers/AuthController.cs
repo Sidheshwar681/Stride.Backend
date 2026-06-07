@@ -1,11 +1,10 @@
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stride.Api.Services;
 using Stride.Api.Storage;
 using Stride.Api.Models;
-using Stride.Api.DTOs;
 using BCrypt.Net;
 
 namespace Stride.Api.Controllers;
@@ -27,6 +26,8 @@ public sealed class AuthController : ControllerBase
         _passwordHasher = passwordHasher;
         _tokens = tokens;
     }
+
+    // ================= DTOs =================
 
     public sealed class RegisterRequest
     {
@@ -61,25 +62,36 @@ public sealed class AuthController : ControllerBase
         string Email,
         DateTimeOffset CreatedAt);
 
-    [AllowAnonymous]
-  [HttpPost("register")]
-public IActionResult Register([FromBody] RegisterRequest request)
+    // ================= REGISTER =================
+[AllowAnonymous]
+[HttpPost("register")]
+public async Task<IActionResult> Register(
+    [FromBody] RegisterRequest request,
+    CancellationToken cancellationToken)
 {
-    var user = new User
-    {
-        Id = Guid.NewGuid(),
-        Username = request.Username,
-        Email = request.Email,
-        PasswordHash = HashPassword(request.Password),
-        CreatedAt = DateTimeOffset.UtcNow
-    };
+    var passwordHash = _passwordHasher.Hash(request.Password);
 
-    return Ok(user);
+    var (user, error) = await _users.CreateAsync(
+        request.Username,
+        request.Email,
+        passwordHash,
+        cancellationToken);
+
+    if (error != null)
+    {
+        return BadRequest(new { message = error });
+    }
+
+    return Ok(new
+    {
+        user!.Id,
+        user.Username,
+        user.Email,
+        user.CreatedAt
+    });
 }
-private string HashPassword(string password)
-{
-    return BCrypt.Net.BCrypt.HashPassword(password);
-}
+    // ================= LOGIN =================
+
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> Login(
@@ -92,20 +104,12 @@ private string HashPassword(string password)
 
         if (user is null)
         {
-            return Unauthorized(new
-            {
-                message = "Invalid credentials."
-            });
+            return Unauthorized(new { message = "Invalid credentials." });
         }
 
-        if (!_passwordHasher.Verify(
-            request.Password,
-            user.PasswordHash))
+        if (!_passwordHasher.Verify(request.Password, user.PasswordHash))
         {
-            return Unauthorized(new
-            {
-                message = "Invalid credentials."
-            });
+            return Unauthorized(new { message = "Invalid credentials." });
         }
 
         var token = _tokens.CreateAccessToken(user);
@@ -116,6 +120,8 @@ private string HashPassword(string password)
             user.Email,
             token));
     }
+
+    // ================= ME =================
 
     [Authorize]
     [HttpGet("me")]
@@ -131,9 +137,7 @@ private string HashPassword(string password)
             return Unauthorized();
         }
 
-        var user = await _users.FindByIdAsync(
-            userId,
-            cancellationToken);
+        var user = await _users.FindByIdAsync(userId, cancellationToken);
 
         if (user is null)
         {
@@ -146,6 +150,8 @@ private string HashPassword(string password)
             user.Email,
             user.CreatedAt));
     }
+
+    // ================= VERSION =================
 
     [AllowAnonymous]
     [HttpGet("version")]
