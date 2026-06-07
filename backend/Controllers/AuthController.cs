@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stride.Api.Services;
 using Stride.Api.Storage;
+using Stride.Api.Models;
+using Stride.Api.DTOs;
+using BCrypt.Net;
 
 namespace Stride.Api.Controllers;
 
@@ -59,43 +62,23 @@ public sealed class AuthController : ControllerBase
         DateTimeOffset CreatedAt);
 
     [AllowAnonymous]
-  
-[HttpPost("register")]
-public async Task<ActionResult<AuthResponse>> Register(
-    RegisterRequest request,
-    CancellationToken cancellationToken)
+  [HttpPost("register")]
+public IActionResult Register([FromBody] RegisterRequest request)
 {
-    try
+    var user = new User
     {
-        var passwordHash = _passwordHasher.Hash(request.Password);
+        Id = Guid.NewGuid(),
+        Username = request.Username,
+        Email = request.Email,
+        PasswordHash = HashPassword(request.Password),
+        CreatedAt = DateTimeOffset.UtcNow
+    };
 
-        var (user, error) = await _users.CreateAsync(
-            request.Username,
-            request.Email,
-            passwordHash,
-            cancellationToken);
-
-        if (user is null)
-        {
-            return BadRequest(new { message = error });
-        }
-
-        var token = _tokens.CreateAccessToken(user);
-
-        return Ok(new AuthResponse(
-            user.Id,
-            user.Username,
-            user.Email,
-            token));
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, new
-        {
-            error = ex.Message,
-            inner = ex.InnerException?.Message
-        });
-    }
+    return Ok(user);
+}
+private string HashPassword(string password)
+{
+    return BCrypt.Net.BCrypt.HashPassword(password);
 }
     [AllowAnonymous]
     [HttpPost("login")]
