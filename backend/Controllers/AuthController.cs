@@ -1,11 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stride.Api.Services;
 using Stride.Api.Storage;
 using Stride.Api.Models;
-using BCrypt.Net;
 using Stride.Api.DTOs;
 
 namespace Stride.Api.Controllers;
@@ -28,69 +26,37 @@ public sealed class AuthController : ControllerBase
         _tokens = tokens;
     }
 
-    // ================= DTOs =================
-
-    public sealed class RegisterRequest
-    {
-        [Required, MinLength(2), MaxLength(40)]
-        public string Username { get; init; } = "";
-
-        [Required, EmailAddress, MaxLength(200)]
-        public string Email { get; init; } = "";
-
-        [Required, MinLength(6), MaxLength(200)]
-        public string Password { get; init; } = "";
-    }
-
-    public sealed class LoginRequest
-    {
-        [Required, MinLength(2), MaxLength(200)]
-        public string Identifier { get; init; } = "";
-
-        [Required, MinLength(1), MaxLength(200)]
-        public string Password { get; init; } = "";
-    }
-
-    public sealed record AuthResponse(
-        Guid UserId,
-        string Username,
-        string Email,
-        string AccessToken);
-
-    public sealed record MeResponse(
-        Guid UserId,
-        string Username,
-        string Email,
-        DateTimeOffset CreatedAt);
-
     // ================= REGISTER =================
-[AllowAnonymous]
-[HttpPost("register")]
-public async Task<IActionResult> Register(
-    [FromBody] RegisterRequest request,
-    CancellationToken cancellationToken)
-{
-    var passwordHash = _passwordHasher.Hash(request.Password);
 
-    var (user, error) = await _users.CreateAsync(
-        request.Username,
-        request.Email,
-        passwordHash,
-        cancellationToken);
-
-    if (error != null)
+    [AllowAnonymous]
+    [ResponseCache(Duration = 60)]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterRequest request,
+        CancellationToken cancellationToken)
     {
-        return BadRequest(new { message = error });
+        var passwordHash = _passwordHasher.Hash(request.Password);
+
+        var (user, error) = await _users.CreateAsync(
+            request.Username,
+            request.Email,
+            passwordHash,
+            cancellationToken);
+
+        if (error != null)
+        {
+            return BadRequest(new { message = error });
+        }
+
+        return Ok(new
+        {
+            user!.Id,
+            user.Username,
+            user.Email,
+            user.CreatedAt
+        });
     }
 
-    return Ok(new
-    {
-        user!.Id,
-        user.Username,
-        user.Email,
-        user.CreatedAt
-    });
-}
     // ================= LOGIN =================
 
     [AllowAnonymous]
