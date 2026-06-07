@@ -6,6 +6,7 @@ using Stride.Api.Services;
 using Stride.Api.Storage;
 using Stride.Api.Models;
 using BCrypt.Net;
+using Stride.Api.DTOs;
 
 namespace Stride.Api.Controllers;
 
