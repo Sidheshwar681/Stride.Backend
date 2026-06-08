@@ -20,9 +20,9 @@ Open:
 - API:
   - `POST /api/auth/register`
   - `POST /api/auth/login`
-  - `GET /api/auth/me` (Bearer token)
-  - `POST /api/purchases` (Bearer token)
-  - `GET /api/purchases` (Bearer token)
+  - `GET /api/auth/me` (JWT token)
+  - `POST /api/purchases` (JWT token)
+  - `GET /api/purchases` (JWT token)
 
 ## Config
 

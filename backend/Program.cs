@@ -52,17 +52,17 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1"
     });
 
-    var bearerScheme = new OpenApiSecurityScheme
+    var jwtScheme = new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Description = "Enter JWT Bearer token as: Bearer {token}",
+        Description = "Enter only the raw JWT token here (do not include the Bearer prefix).",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
         Scheme = "bearer",
         BearerFormat = "JWT",
     };
 
-    options.AddSecurityDefinition("Bearer", bearerScheme);
+    options.AddSecurityDefinition("JWT", jwtScheme);
 
     // Swashbuckle with Microsoft.OpenApi expects a factory that receives the
     // generated OpenApiDocument and returns an OpenApiSecurityRequirement.
@@ -70,7 +70,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         var req = new OpenApiSecurityRequirement();
         // Create a reference to the security scheme by id using the document.
-        var schemeRef = new OpenApiSecuritySchemeReference("Bearer", doc, null);
+        var schemeRef = new OpenApiSecuritySchemeReference("JWT", doc, null);
         req.Add(schemeRef, new List<string>());
         return req;
     });
