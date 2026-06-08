@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Stride.Api.Data;
 using Stride.Api.Models;
 using Stride.Api.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Stride.Api.Storage;
 
@@ -9,11 +10,15 @@ public sealed class UserRepository
 {
     private readonly AppDbContext _context;
     private readonly IClock _clock;
+    private readonly PasswordHasher _passwordHasher;
+    private readonly ILogger<UserRepository> _logger;
 
-    public UserRepository(AppDbContext context, IClock clock)
+    public UserRepository(AppDbContext context, IClock clock, PasswordHasher passwordHasher, ILogger<UserRepository> logger)
     {
         _context = context;
         _clock = clock;
+        _passwordHasher = passwordHasher;
+        _logger = logger;
     }
 
     public async Task<User?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -42,7 +47,7 @@ public sealed class UserRepository
     public async Task<(User? User, string? Error)> CreateAsync(
         string username,
         string email,
-        string passwordHash,
+        string password,
         CancellationToken cancellationToken)
     {
         var normalizedUsername = (username ?? "").Trim();
@@ -77,18 +82,29 @@ public sealed class UserRepository
             return (null, "Username is already taken.");
         }
 
+        var hash = _passwordHasher.Hash(password);
+
         var user = new User
         {
             Id = Guid.NewGuid(),
             Username = normalizedUsername,
             Email = normalizedEmail,
-            PasswordHash = passwordHash,
+            PasswordHash = hash,
             CreatedAt = _clock.UtcNow
         };
 
         _context.Users.Add(user);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        try
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        finally
+        {
+            sw.Stop();
+            _logger?.LogInformation("SaveChangesAsync took {ms}ms for user {email}", sw.ElapsedMilliseconds, normalizedEmail);
+        }
 
         return (user, null);
     }

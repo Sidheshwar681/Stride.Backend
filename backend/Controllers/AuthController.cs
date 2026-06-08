@@ -35,12 +35,10 @@ public sealed class AuthController : ControllerBase
         [FromBody] RegisterRequest request,
         CancellationToken cancellationToken)
     {
-        var passwordHash = _passwordHasher.Hash(request.Password);
-
         var (user, error) = await _users.CreateAsync(
             request.Username,
             request.Email,
-            passwordHash,
+            request.Password,
             cancellationToken);
 
         if (error != null)
