@@ -116,6 +116,51 @@ public sealed class AuthController : ControllerBase
             user.CreatedAt));
     }
 
+    [AllowAnonymous]
+    [HttpGet("user/{id:guid}")]
+    public async Task<ActionResult<MeResponse>> GetUserById(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var user = await _users.FindByIdAsync(id, cancellationToken);
+
+        if (user is null)
+        {
+            return NotFound(new { message = "User not found." });
+        }
+
+        return Ok(new MeResponse(
+            user.Id,
+            user.Username,
+            user.Email,
+            user.CreatedAt));
+    }
+
+    [AllowAnonymous]
+    [HttpGet("user")]
+    public async Task<ActionResult<MeResponse>> GetUserByEmail(
+        [FromQuery] string email,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return BadRequest(new { message = "Email query is required." });
+        }
+
+        var user = await _users.FindByEmailOrUsernameAsync(email, cancellationToken);
+
+        if (user is null)
+        {
+            return NotFound(new { message = "User not found." });
+        }
+
+        return Ok(new MeResponse(
+            user.Id,
+            user.Username,
+            user.Email,
+            user.CreatedAt));
+    }
+
     // ================= VERSION =================
 
     [AllowAnonymous]
